@@ -1,9 +1,10 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
   cors = require("cors"),
+  appEnv = require("cfenv").getAppEnv(),
   app = express();
 
-app.use(cors());
+  app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -23,8 +24,9 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`App listening on http://localhost:${port}`);
+/* app.listen(port, () => { */
+app.listen(appEnv.port, appEnv.bind, () => {
+  console.log(`App listening on http://localhost:${appEnv.port}`);
 });
 
 module.exports = app;
