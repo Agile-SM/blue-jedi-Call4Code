@@ -3,10 +3,10 @@ const express = require("express"),
   bodyParser = require('body-parser'),
   appEnv = require("cfenv").getAppEnv(),
   app = express();
-
+/* 
 let Cloudant = require('@cloudant/cloudant');
 let cloudant = Cloudant({ account: '05f8b47b-7a7b-4252-a0c3-3dffb7a7b2de-bluemix', password: 'cf2cd0758e5a31fc436f2de98b1bf0254fc2d214df2eb48d8fc988becaa623b4' });
-let db = cloudant.db.use('disaster-prevention');
+let db = cloudant.db.use('disaster-prevention'); */
 let request = require('request');
 
 app.use(cors());
