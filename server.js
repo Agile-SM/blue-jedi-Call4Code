@@ -1,5 +1,8 @@
+"use strict";
+
 const express = require("express"),
   cors = require("cors"),
+  async = require("async"),
   bodyParser = require('body-parser'),
   appEnv = require("cfenv").getAppEnv(),
   app = express();
@@ -12,63 +15,80 @@ let request = require('request');
 app.use(cors());
 
 app.get('/api/dashboard', function (req, res) {
-
-    var headers = {
+  let headers;
+  let EARTHQUAKE;
+  let FLOOD;
+  let TORNADO;
+  async.waterfall([
+    function (callback) {
+      var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic Yng6Yng='
-    };
+      };
 
-    var dataString = 'apikey=LX9J-lZlxHAVaieihn8N7DHGVKb5CaBnS79sUMlUtr5M&grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey';
+      var dataString = 'apikey=LX9J-lZlxHAVaieihn8N7DHGVKb5CaBnS79sUMlUtr5M&grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey';
 
-    var optionsToken = {
-        url: 'https://iam.bluemix.net/identity/token',
-        method: 'POST',
-        headers: headers,
-        body: dataString
-    };
-    /* res.json("HOLA") */
-    
-    request(optionsToken, async function callbackToken(error, response, body) {
-        var headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + JSON.parse(body).access_token,
-            'ML-Instance-ID': '44d787cb-e870-4023-8bba-7f10749749fb'
-        };
-        //EARTHQUAKE
-        const EARTHQUAKE = await watsonStudio('{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "TORNADO", "FLOOD"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}', headers)
-        // FLOOD
-        const FLOOD = await watsonStudio('{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "TORNADO", "EARTHQUAKE"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}', headers)
-        // TORNADO
-        const TORNADO = await watsonStudio('{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "EARTHQUAKE", "FLOOD"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}', headers)
-        db.find({selector: {date: req.query.date}}).then((body) => {
-            res.json({docs: body.docs, machine_learning: {earthquake: EARTHQUAKE.values[0][12][0], flood: FLOOD.values[0][12][0], tornado: TORNADO.values[0][12][0]}});
-        }).catch((error) => { 
-            res.json({error: error})    
-        });
-    });
-})
-
-function watsonStudio(data, headers) {
-  return new Promise((resolve, reject) => {
-      
-      var options = {
-          url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
+      var optionsToken = {
+          url: 'https://iam.bluemix.net/identity/token',
           method: 'POST',
           headers: headers,
-          body: data
+          body: dataString
       };
-      
-      function callback(error, response, body) {
-          if (body) {
-              resolve(JSON.parse(body));
-          } else {
-              reject();
-          }
-      }
-      request(options, callback);
-  })
-};
+      request(optionsToken, function callbackToken(error, response, body) {
+        return callback(null, JSON.parse(body));
+      })
+    }, function (body, callback) {
+      console.log("MEH")
+      headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + body.access_token,
+        'ML-Instance-ID': '44d787cb-e870-4023-8bba-7f10749749fb'
+      };
+      //EARTHQUAKE
+      var options = {
+        url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
+        method: 'POST',
+        headers: headers,
+        body: '{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "TORNADO", "FLOOD"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}'
+      };
+      request(options, function (error, response, body) {
+        EARTHQUAKE = JSON.parse(body);
+        return callback(null, true);
+      });
+    }, function (body, callback) {
+      // FLOOD
+      var options = {
+        url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
+        method: 'POST',
+        headers: headers,
+        body: '{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "TORNADO", "EARTHQUAKE"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}'
+      };
+      request(options, function (error, response, body) {
+        FLOOD = JSON.parse(body);
+        return callback(null, true);
+      });
+    }, function (body, callback) {
+      //TORNADO
+      var options = {
+        url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
+        method: 'POST',
+        headers: headers,
+        body: '{"fields": ["AIRSPEED", "FLOOD WARNING", "WATER QUALITY", "SOLIDS", "CONDUCTIVITY", "pH", "FECAL COLIFORMS", "GROWTH LEVEL", "EARTHQUAKE", "FLOOD"], "values": [[143.87,18.16,75.5,88.96,907.05, 11.81, 7334.16, 3.89, "false", "false"]]}'
+      };
+      request(options, function (error, response, body) {
+        TORNADO = JSON.parse(body);
+        return callback(null, true);
+      });
+    }], function (error, month, days) {
+      db.find({selector: {date: req.query.date}}).then((body) => {
+        res.json({docs: body.docs, machine_learning: {earthquake: EARTHQUAKE.values[0][12][0], flood: FLOOD.values[0][12][0], tornado: TORNADO.values[0][12][0]}});
+      }).catch((error) => { 
+          res.json({error: error})    
+      });
+    })
+})
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
