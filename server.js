@@ -1,5 +1,6 @@
 const express = require("express"),
   cors = require("cors"),
+  bodyParser = require('body-parser'),
   appEnv = require("cfenv").getAppEnv(),
   app = express();
 
