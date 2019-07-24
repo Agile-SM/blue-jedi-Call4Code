@@ -26,8 +26,8 @@ app.get('/api/dashboard',async function (req, res) {
         headers: headers,
         body: dataString
     };
-
-    async function callbackToken(error, response, body) {
+    res.json("HOLA")
+    /* async function callbackToken(error, response, body) {
         var headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -46,7 +46,7 @@ app.get('/api/dashboard',async function (req, res) {
             res.json({error: error})    
         });
     }
-    request(optionsToken, callbackToken);
+    request(optionsToken, callbackToken); */
 })
 
 function watsonStudio(data, headers) {
