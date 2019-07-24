@@ -8,7 +8,10 @@ app.use(cors());
 
 // Routes
 /* let router = express.Router(); */
-app.use("/api/dashboard", require("./routes/dashboard"));
+/* app.use("/api/dashboard", require("./routes/dashboard")); */
+app.get('/api/dashboard', function (req, res) {
+  res.json("HOLA")
+})
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 /* app.use("/api", router); */
