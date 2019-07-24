@@ -11,8 +11,7 @@ let request = require('request');
 
 app.use(cors());
 
-app.get('/api/dashboard', function (req, res) {
-  var request = require('request');
+app.get('/api/dashboard',async function (req, res) {
 
     var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
