@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Saavedra",
+  "license": "ISC",
+  "dependencies": {
+    "@cloudant/cloudant": "^4.1.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "ibm-watson": "^4.2.1",
+    "image-downloader": "^3.4.2",
+    "moment": "^2.24.0",
+    "node-cron": "^2.0.3",
+    "request": "^2.88.0",
+    "uuidv4": "^4.0.0",
+    "watson-developer-cloud": "^4.0.1"
+  }
+}
