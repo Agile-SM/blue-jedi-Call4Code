@@ -13,7 +13,7 @@ app.use(cors());
 
 app.get('/api/dashboard',async function (req, res) {
 
-    var headers = {
+    /* var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic Yng6Yng='
     };
@@ -25,7 +25,7 @@ app.get('/api/dashboard',async function (req, res) {
         method: 'POST',
         headers: headers,
         body: dataString
-    };
+    }; */
     res.json("HOLA")
     /* async function callbackToken(error, response, body) {
         var headers = {
