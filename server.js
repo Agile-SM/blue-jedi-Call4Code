@@ -12,11 +12,8 @@ app.use(bodyParser.json());
 // Routes
 let router = express.Router();
 console.log("LAS RUTAS?")
-router.use("/iot", require("./routes/iot"));
-router.use("/arcgis", require("./routes/arcgis"));
 router.use("/dashboard", require("./routes/dashboard"));
-router.use("/cron", require("./routes/cron"));
-router.use("/vr", require("./routes/visual-recognition"));
+/* router.use("/cron", require("./routes/cron")); */
 
 // all routes will be prefixed with /api
 app.use("/api", router);
