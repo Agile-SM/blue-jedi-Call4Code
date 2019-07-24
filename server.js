@@ -11,7 +11,7 @@ let request = require('request');
 
 app.use(cors());
 
-app.get('/api/dashboard',async function (req, res) {
+app.get('/api/dashboard', function (req, res) {
 
     /* var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -50,7 +50,7 @@ app.get('/api/dashboard',async function (req, res) {
 })
 
 function watsonStudio(data, headers) {
-  return new Promise((resolve, reject) => {
+  /* return new Promise((resolve, reject) => {
       
       var options = {
           url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
@@ -67,7 +67,7 @@ function watsonStudio(data, headers) {
           }
       }
       request(options, callback);
-  })
+  }) */
 };
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
