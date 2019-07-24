@@ -3,17 +3,17 @@ const express = require("express"),
   bodyParser = require('body-parser'),
   appEnv = require("cfenv").getAppEnv(),
   app = express();
-/* 
+
 let Cloudant = require('@cloudant/cloudant');
 let cloudant = Cloudant({ account: '05f8b47b-7a7b-4252-a0c3-3dffb7a7b2de-bluemix', password: 'cf2cd0758e5a31fc436f2de98b1bf0254fc2d214df2eb48d8fc988becaa623b4' });
-let db = cloudant.db.use('disaster-prevention'); */
+let db = cloudant.db.use('disaster-prevention');
 let request = require('request');
 
 app.use(cors());
 
-app.get('/api/dashboard', async function (req, res) {
+app.get('/api/dashboard', function (req, res) {
 
-    /* var headers = {
+    var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic Yng6Yng='
     };
@@ -25,9 +25,10 @@ app.get('/api/dashboard', async function (req, res) {
         method: 'POST',
         headers: headers,
         body: dataString
-    }; */
-    res.json("HOLA")
-    /* async function callbackToken(error, response, body) {
+    };
+    /* res.json("HOLA") */
+    
+    request(optionsToken, async function callbackToken(error, response, body) {
         var headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -45,12 +46,11 @@ app.get('/api/dashboard', async function (req, res) {
         }).catch((error) => { 
             res.json({error: error})    
         });
-    }
-    request(optionsToken, callbackToken); */
+    });
 })
 
 function watsonStudio(data, headers) {
-  /* return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
       
       var options = {
           url: 'https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/44d787cb-e870-4023-8bba-7f10749749fb/deployments/d77ced64-8f1a-4b21-92a7-91e367db77b7/online',
@@ -67,7 +67,7 @@ function watsonStudio(data, headers) {
           }
       }
       request(options, callback);
-  }) */
+  })
 };
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
