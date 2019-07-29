@@ -2,11 +2,13 @@
 
 [![N|Solid](https://developer.ibm.com/callforcode/img/call-for-code19.png)](https://developer.ibm.com/callforcode/)
 
-#Live Demo
+# Live Demo
 
 You can check the dashboard [here](https://disaster-prevention.eu-gb.mybluemix.net/)
 
 # Solution
+
+You can check the project website [here](https://singlepage-disaster-prevention.eu-gb.mybluemix.net/)
 
 Blue Jedi is an IBM Cloud services based solution, for the prevention of natural disasters thanks to: 
 
