@@ -2,7 +2,8 @@
 
 [![N|Solid](https://developer.ibm.com/callforcode/img/call-for-code19.png)](https://developer.ibm.com/callforcode/)
 
-#[Live Demo](https://disaster-prevention.eu-gb.mybluemix.net/)
+#Live Demo
+
 You can check the dashboard [here](https://disaster-prevention.eu-gb.mybluemix.net/)
 
 # Solution
